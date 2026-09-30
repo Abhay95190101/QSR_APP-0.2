@@ -1,0 +1,117 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with User ID, credentials, verification status for Gmail and mobile phone",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Custom unique User ID or username",
+          "maxLength": 64
+        },
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID",
+          "maxLength": 128
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User's display name",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email or Gmail address",
+          "maxLength": 256
+        },
+        "emailVerified": {
+          "type": "boolean",
+          "description": "Whether Gmail/email address has been verified"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "User's mobile phone number",
+          "maxLength": 32
+        },
+        "phoneVerified": {
+          "type": "boolean",
+          "description": "Whether mobile number has been verified via OTP"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["owner", "manager", "kitchen", "customer"],
+          "description": "Application permission role"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "Avatar URL or preset identifier",
+          "maxLength": 1024
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation ISO date timestamp",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update ISO date timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId", "uid", "displayName", "role", "createdAt"]
+    },
+    "OrderRecord": {
+      "title": "OrderRecord",
+      "description": "Dining and takeaway customer order",
+      "type": "object",
+      "properties": {
+        "orderNumber": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "tableNumber": {
+          "type": "number"
+        },
+        "diningZone": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "customerName": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "status": {
+          "type": "string",
+          "enum": ["received", "preparing", "ready", "served", "cancelled"]
+        },
+        "paymentStatus": {
+          "type": "string",
+          "enum": ["pending", "paid"]
+        },
+        "total": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["orderNumber", "status", "paymentStatus", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Collection of registered application user profiles"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/OrderRecord" },
+      "description": "Collection of dining restaurant orders"
+    }
+  }
+}
